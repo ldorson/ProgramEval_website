@@ -1,2 +1,0 @@
-"0","model_did <- lm(grad ~ after + state + hope , data = did_data)"
-"0","tidy(model_did)"

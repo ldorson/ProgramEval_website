@@ -13,6 +13,8 @@ navbar:
     - text: "Data and Methods"
       href: Data.html
     - text: "Synthetic Analysis"
+      href: Analysis_without.html
+    - text: "Synthetic Data with code"
       href: Analysis.html
     - text: "Conclusion"
       href: Conclusion.html

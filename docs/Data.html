@@ -255,7 +255,10 @@ $(document).ready(function () {
   <a href="Data.html">Data and Methods</a>
 </li>
 <li>
-  <a href="Analysis.html">Synthetic Analysis</a>
+  <a href="Analysis_without_code.html">Synthetic Analysis</a>
+</li>
+<li>
+  <a href="Analysis.html">Synthetic Data with code</a>
 </li>
 <li>
   <a href="Conclusion.html">Conclusion</a>
@@ -289,10 +292,10 @@ group from a control group. As was illustrated in my DAG, my only
 potential confounders are time and location, which ideally suit a DiD
 situation. Therefore, the causal effect of the HOPE scholarship on
 graduation outcomes can be found by controlling for time and location
-(state).A major assumption in a DiD model is that the outcome trends for
-both the treatment and control groups would be similar without treatment
-intervention. In other words, this helps establish the control group as
-the counterfactual.</p>
+(state). A major assumption in a DiD model is that the outcome trends
+for both the treatment and control groups would be similar without
+treatment intervention. In other words, this helps establish the control
+group as the counterfactual.</p>
 <p>In this project, the treatment group will consist of Georgia
 students, while the control group will consist of students from a state
 that exhibited similar trends in graduation rates before Georgia
@@ -310,12 +313,9 @@ class="math inline">\(\beta_3\)</span> which captures the causal changes
 over time due to the HOPE scholarship on the outcome of interest,
 graduation rates. The DiD estimator is an interaction variable
 consisting of two binary variables: POST &amp; HOPE. POST indicates if
-the observation was taken after HOPE started (&gt;1992) by a value of 1
+the observation was taken after HOPE started (1993) by a value of 1
 while HOPE indicates if the observation comes from the treatment state,
 Georgia, by a value of 1 as well.</p>
-<p>Also briefly describe what kinds of threats to internal and external
-validity you face in your study.</p>
-<p><em>(<strong>≈300 words</strong>)</em></p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>

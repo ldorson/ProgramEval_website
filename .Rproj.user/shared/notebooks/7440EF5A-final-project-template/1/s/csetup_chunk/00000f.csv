@@ -1,2 +1,0 @@
-"0","# Change this to `echo = FALSE` to hide all code"
-"0","knitr::opts_chunk$set(echo = TRUE)"

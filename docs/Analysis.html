@@ -257,7 +257,10 @@ $(document).ready(function () {
   <a href="Data.html">Data and Methods</a>
 </li>
 <li>
-  <a href="Analysis.html">Synthetic Analysis</a>
+  <a href="Analysis_without_code.html">Synthetic Analysis</a>
+</li>
+<li>
+  <a href="Analysis.html">Synthetic Data with code</a>
 </li>
 <li>
   <a href="Conclusion.html">Conclusion</a>
@@ -282,98 +285,123 @@ $(document).ready(function () {
 </div>
 
 
-<p>Synthetic Differences in Differences</p>
-<p>Generate a synthetic (fake) dataset in R with all the variables
-you’ll need for the real life analysis. Analyze the data using your
-identification strategy. For instance:</p>
+<p>In this section I create the Synthetic data with relationships based
+on intuition and research. The Synthetic Data will be used to train my
+theoretic differences-in-differences (DiD) model. The data used is
+pooled cross sectional at the student level between the years 1988 and
+1997. Below are the three variables used in the DiD regression.
+<code>state</code> and <code>year</code> are exogenous to the model, and
+<code>post</code> is derived from year.<br />
+<br />
+<em>Variables:</em></p>
 <ul>
-<li>If you’re relying on observational data, close all the backdoors
-with matching or inverse probability weighting, don’t adjust for
-colliders, and make a strong argument for isolation of the causal effect
-in the absence of treatment/control groups</li>
-<li>If you’re doing an RCT, test the differences in means in the
-treatment and control groups (and follow all other best practices listed
-in the World Bank book, checking for balance across groups, etc.)</li>
-<li>If you’re doing diff-in-diff, run a regression model with an
-interaction term to show the diff-in-diff</li>
-<li>If you’re doing regression discontinuity, check for a jump in the
-outcome variable at the cutoff in the running variable</li>
-<li>If you’re using instrumental variables, check the validity of your
-instrument and run a 2SLS model</li>
+<li><p><code>Year</code>: ranged from 1988 to 1997 to give adequate
+before and after period analysis, uniform distributions</p></li>
+<li><p><code>State</code>: {0,1} binary with 1 indication Georgia or
+Treatment state and 0 indication control state, uniform as well</p></li>
+<li><p><code>Post</code>: {0,1} binary and derived from year &gt;1992 to
+reflect HOPE start in 1993</p></li>
+<li><p><code>grad</code>: {0,1} where the observation is equal to 1 if
+the student has acquired an undergraduate degree.</p></li>
 </ul>
-<p>Include robustness checks to ensure the validity of your effect
-(i.e. if you’re doing regression discontinuity, test different
-bandwidths and kernel types; etc.)</p>
-<p>(<strong>As many words as you need to fully describe your analysis
-and results</strong>)</p>
+<p><em>Relationships</em></p>
+<p>Natural growth in educational attainment was also worked into
+<code>grad</code> variable. As the year increases, so does the
+graduation rate. Also, Georgia education attainment is lower in
+comparison to most other states during this time period which was worked
+into the data as well.</p>
 <pre class="r"><code>#packages
 library(tidyverse)
 library(broom)
 library(patchwork)
-library(scales)</code></pre>
+library(scales)
+library(modelsummary)
+library(ggplot2)</code></pre>
 <pre class="r"><code>set.seed(4660)
 
 # simulate 100000 students
 n_students &lt;- 100000
 
 
-# state B represents Georgia (treatment state) while state B represents control state
+
 did_data &lt;- tibble(
   id = 1:n_students,
-  year = round(runif(n_students, min = 1988, max = 1997), 0),
-  state = sample(c(&quot;state A&quot;, &quot;state B&quot;), n_students, replace = TRUE)
+  year = runif(n_students, min = 1988, max = 1997)%&gt;%
+    round(0),
+  state = sample(c(&quot;0&quot;, &quot;1&quot;), n_students, replace = TRUE)
 ) %&gt;%
-  mutate(hope = ifelse(state == &quot;state B&quot; &amp; year &gt; 1992, TRUE, FALSE)) %&gt;%
+  mutate(hope = ifelse(state == &quot;1&quot; &amp; year &gt; 1992, 1, 0)) %&gt;%
   mutate(grad_base = rbeta(n_students, shape1 = 6, shape2 = 3) * 100,
-         state_effect = ifelse(state == &quot;state B&quot;, rnorm(n_students, mean = 4, sd = 2), 0),
+         state_effect = ifelse(state == &quot;1&quot;, rnorm(n_students, mean = -5, sd = 2), 0),
          year_smaller = year - 1987,
-         year_effect = rnorm(n_students, mean = -3, sd = 0.2) * year_smaller,
-         hope_effect = ifelse(state == &quot;state B&quot; &amp; year &gt; 1992,
-                             rnorm(n_students, mean = -8, sd = 2),
-                             0),
+         year_effect = rnorm(n_students, mean = 2, sd = 0.2) * year_smaller,
+         hope_effect = ifelse(state == &quot;1&quot; &amp; year &gt; 1992,
+                             rnorm(n_students, mean = 8, sd = 3),0),
          grad = grad_base + state_effect + year_effect + hope_effect,
          grad = rescale(grad, to = c(0, 100))) %&gt;%
-  mutate(after = year &gt; 1992)
+  mutate(post = ifelse(year &gt; 1992,1,0))
 
 head(did_data)</code></pre>
 <pre><code>## # A tibble: 6 × 11
-##      id  year state   hope  grad_base state_effect year_smaller year_effect hope_effect  grad after
-##   &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;lgl&gt;     &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;
-## 1     1  1995 state B TRUE       67.1         5.49            8      -27.3        -6.69  51.9 TRUE 
-## 2     2  1990 state A FALSE      79.0         0               3       -9.60        0     76.0 FALSE
-## 3     3  1994 state A FALSE      51.3         0               7      -21.2         0     45.2 TRUE 
-## 4     4  1990 state A FALSE      74.8         0               3       -8.76        0     73.4 FALSE
-## 5     5  1995 state B TRUE       75.1         2.88            8      -20.7        -6.36  61.6 TRUE 
-## 6     6  1994 state B TRUE       73.1         7.03            7      -20.1        -7.04  63.2 TRUE</code></pre>
+##      id  year state  hope grad_base state_effect year_smaller year_effect hope_effect  grad  post
+##   &lt;int&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1  1995 1         1      67.1        -3.51            8       12.7         9.96  64.1     1
+## 2     2  1990 0         0      79.0         0               3        5.40        0     62.5     0
+## 3     3  1994 0         0      51.3         0               7       13.8         0     46.0     1
+## 4     4  1990 0         0      74.8         0               3        6.24        0     59.7     0
+## 5     5  1995 1         1      75.1        -6.12            8       19.3        10.5   74.8     1
+## 6     6  1994 1         1      73.1        -1.97            7       14.9         9.43  72.0     1</code></pre>
+<div id="difference-in-means" class="section level3">
+<h3>Difference in Means</h3>
+<p>Below shows the difference in means between the the treatment and
+control group, where Georgia is equal to one. From the graph, we can
+infer that, on average, the control state has a higher graduation
+rate.</p>
 <pre class="r"><code>ggplot(did_data, aes(x = state, y = grad, color = state)) +
   stat_summary(geom = &quot;pointrange&quot;, fun.data = &quot;mean_se&quot;) +
-  guides(color = &quot;none&quot;)</code></pre>
-<p><img src="Analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>plot_data &lt;- did_data %&gt;%
+  guides(color = &quot;none&quot;) + 
+  labs(title = &quot;Difference in Graduation Rates&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+</div>
+<div id="test-parallel-trends" class="section level3">
+<h3>Test Parallel Trends</h3>
+<p>The graph below visually tests for parallel trends. From it we can
+infer that the control state serves as a proper counterfactual absent
+the HOPE scholarship intervention. After HOPE implementation, a
+noticeable increase in graduation rates is depicted in Georgia as
+well.</p>
+<pre class="r"><code>plot_data &lt;- did_data %&gt;% 
   group_by(year, state) %&gt;%
-  summarize(mean = mean(grad),
+  summarize(average_grad = mean(grad),
             se = sd(grad) / sqrt(n()),
-            upper = mean + (1.96 * se),
-            lower = mean + (-1.96 * se))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>ggplot(plot_data, aes(x = year, y = mean, color = state)) +
+            upper = average_grad + (1.96 * se),
+            lower = average_grad + (-1.96 * se))
+
+ggplot(plot_data, aes(x = year, y= average_grad, color = state)) +
   geom_vline(xintercept = 1993) +
   geom_ribbon(aes(ymin = lower, ymax = upper, fill = state), alpha = 0.3, color = FALSE) +
   geom_line() +
-  theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="Analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>model_did &lt;- lm(grad ~ after + state + hope , data = did_data)
-tidy(model_did)</code></pre>
-<pre><code>## # A tibble: 4 × 5
-##   term         estimate std.error statistic   p.value
-##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)     66.3     0.0775     855.  0        
-## 2 afterTRUE      -10.6     0.109      -96.9 0        
-## 3 statestate B     3.27    0.109       29.9 3.64e-196
-## 4 hopeTRUE        -6.43    0.154      -41.6 0</code></pre>
-<pre class="r"><code>modelsummary(list(&quot;DiD&quot; = model_did),
+  theme(legend.position = &quot;bottom&quot;) +
+  labs(title = &quot;Average Graduation Rates Over Time&quot;) +
+  scale_x_continuous(breaks = plot_data$year)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+</div>
+<div id="regression-analysis" class="section level2">
+<h2>Regression Analysis</h2>
+<p>The results from this synthetic analysis were statistically
+significant and estimate that the HOPE scholarship program caused
+graduation rates in Georgia to increase by around 7 percentage points.
+Also, being in Georgia is associated with a 4 percentage point decrease
+in graduation rates on average and being after 1993 is associated with a
+8 percentage point increase in graduation rates on average. This model
+controls for the graduation rate’s natural growth and state
+differences.</p>
+<pre class="r"><code>model_did &lt;- lm(grad ~ post + state + post * state , data = did_data)
+
+modelsummary(list(&quot;DiD&quot; = model_did),
              stars = TRUE,
-             title = &quot; Synthetic Regression Results&quot;)</code></pre>
+             title = &quot; Synthetic Regression Results&quot;,
+             coef_rename = c(&quot;post&quot; = &quot;POST&quot;,&quot;state1&quot; = &quot;HOPE&quot;, &quot;post * state1&quot; = &quot; Post*HOPE&quot;))</code></pre>
 <table style="NAborder-bottom: 0; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
 <caption>
 Synthetic Regression Results
@@ -393,59 +421,59 @@ DiD
 (Intercept)
 </td>
 <td style="text-align:center;">
-66.281***
+52.864***
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 </td>
 <td style="text-align:center;">
-(0.078)
+(0.083)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-afterTRUE
+POST
 </td>
 <td style="text-align:center;">
-−10.589***
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-</td>
-<td style="text-align:center;">
-(0.109)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-statestate B
-</td>
-<td style="text-align:center;">
-3.272***
+7.974***
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 </td>
 <td style="text-align:center;">
-(0.109)
+(0.117)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-hopeTRUE
+HOPE
 </td>
 <td style="text-align:center;">
-−6.425***
+−4.145***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(0.117)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+POST:HOPE
+</td>
+<td style="text-align:center;">
+6.627***
 </td>
 </tr>
 <tr>
 <td style="text-align:left;box-shadow: 0px 1px">
 </td>
 <td style="text-align:center;box-shadow: 0px 1px">
-(0.154)
+(0.165)
 </td>
 </tr>
 <tr>
@@ -461,7 +489,7 @@ Num.Obs.
 R2
 </td>
 <td style="text-align:center;">
-0.252
+0.169
 </td>
 </tr>
 <tr>
@@ -469,7 +497,7 @@ R2
 R2 Adj.
 </td>
 <td style="text-align:center;">
-0.252
+0.169
 </td>
 </tr>
 <tr>
@@ -477,7 +505,7 @@ R2 Adj.
 AIC
 </td>
 <td style="text-align:center;">
-784154.0
+797917.2
 </td>
 </tr>
 <tr>
@@ -485,7 +513,7 @@ AIC
 BIC
 </td>
 <td style="text-align:center;">
-784201.5
+797964.8
 </td>
 </tr>
 <tr>
@@ -493,7 +521,7 @@ BIC
 Log.Lik.
 </td>
 <td style="text-align:center;">
-−392071.986
+−398953.593
 </td>
 </tr>
 <tr>
@@ -501,7 +529,7 @@ Log.Lik.
 F
 </td>
 <td style="text-align:center;">
-11245.100
+6792.488
 </td>
 </tr>
 <tr>
@@ -509,7 +537,7 @@ F
 RMSE
 </td>
 <td style="text-align:center;">
-12.20
+13.07
 </td>
 </tr>
 </tbody>
@@ -522,6 +550,7 @@ RMSE
 </tr>
 </tfoot>
 </table>
+</div>
 
 
 
