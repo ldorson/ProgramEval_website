@@ -3,7 +3,7 @@
     "path": "~/Workspace/r4ds/final-project/Analysis.Rmd",
     "project_path": "Analysis.Rmd",
     "type": "r_markdown",
-    "hash": "2718709443",
+    "hash": "2249212421",
     "contents": "",
     "dirty": false,
     "created": 1670709997712.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled3",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "97,30",
-        "scrollLine": "90"
+        "cursorPosition": "96,53",
+        "scrollLine": "92"
     },
     "folds": "",
-    "lastKnownWriteTime": 1670786393,
+    "lastKnownWriteTime": 1670805988,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1670786393698,
+    "last_content_update": 1670805988760,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -94,8 +94,7 @@ tidy(model_did)
 
 modelsummary(list("DiD" = model_did),
              stars = TRUE,
-             title = " Synthetic Regression Results",
-             coef_rename = c(""))
+             title = " Synthetic Regression Results")
 
 ```
 

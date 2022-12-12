@@ -1,8 +1,6 @@
 ---
-project:
-  type: website
-  output-dir: docs
 name: "HOPE Scholarship Program Evaluation"
+output_dir: docs
 navbar:
   left:
     - text: "Introduction"
