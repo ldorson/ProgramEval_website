@@ -1,0 +1,3 @@
+"0","ggplot(did_data, aes(x = state, y = grad, color = state)) +"
+"0","  stat_summary(geom = ""pointrange"", fun.data = ""mean_se"") +"
+"0","  guides(color = ""none"")"

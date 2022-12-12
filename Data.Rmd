@@ -1,0 +1,28 @@
+---
+title: "Data and Methods"
+---
+
+## Identification strategy
+
+I will rely on a differences-in-differences (DiD) model to measure the actual program effect. A DiD regression approach works by comparing the before vs after treatment changes in the outcome of a treatment group from a control group. As was illustrated in my DAG, my only potential confounders are time and location, which ideally suit a DiD situation. Therefore, the causal effect of the HOPE scholarship on graduation outcomes can be found by controlling for time and location (state).A major assumption in a DiD model is that the outcome trends for both the treatment and control groups would be similar without treatment intervention. In other words, this helps establish the control group as the counterfactual.
+
+In this project, the treatment group will consist of Georgia students, while the control group will consist of students from a state that exhibited similar trends in graduation rates before Georgia implemented HOPE. Since a DiD is a quasi-experiment and the subjects in each group (treatment vs control) would have to be comparable on a large scale due to the parallel assumption, I would argue that selection bias is not a huge concern.
+
+DiD Model Equation:
+
+$$
+Grad_{it} = \beta_0 + \beta_1 POST_t \ + \beta_2 HOPE_i + \beta_3 (POST_t \ *HOPE_i) + \epsilon_{}
+$$
+
+The coefficient of interest or DiD estimator is $\beta_3$ which captures the causal changes over time due to the HOPE scholarship on the outcome of interest, graduation rates. The DiD estimator is an interaction variable consisting of two binary variables: POST & HOPE. POST indicates if the observation was taken after HOPE started (\>1992) by a value of 1 while HOPE indicates if the observation comes from the treatment state, Georgia, by a value of 1 as well.
+
+Also briefly describe what kinds of threats to internal and external validity you face in your study.
+
+*(**≈300 words**)*
+
+## Data
+
+To run a differences-in-differences analysis, administrative data must be collected from the University System of Georgia and the control state's educational system. Ideally, the administrative data would be cross-sectional and aggregated from students between the years 1988 to 1997. Each observation should include the graduation outcome with the identification of the specific year and the student's state of residence. This would adequately set up the variables needed for the DiD model outlined above.
+
+\
+

@@ -1,0 +1,67 @@
+---
+title: "Outcome and Causation"
+---
+
+## Main Outcome: Increase in College Graduates
+
+The primary outcome to evaluate is college graduation rates. While increasing initial college enrollment is essential, improving the number of colllege graduates impacts society and economic well-being better. Also, enrollment is only the first step in higher educational attainment, while graduation statistics better fit the goal of the HOPE scholarship program.
+
+## Measurement
+
+List of all the possible attributes of the outcome:
+
+-   Increase in College Graduates
+
+-   Higher graduation applications
+
+-   Higher graduation eligibility
+
+-   Higher graduation acceptance (applications)
+
+-   Higher number of major requirements achieved
+
+-   Higher amount of semester hours completed
+
+Students in the United States have certain requirements to graduate from a traditional college. These requirements are usually in the form of an amount of semester hours completed. Therefore, for an increase in college graduates there has to also be an increase in overall completed semester hours. Also, students have to apply for graduation and be accepted to actually graduate. Therefore, there also needs to be an increase in graduation application acceptance for there to be an increase in college graduates.
+
+#### Attribute 1: Increase in College Graduates
+
+-   Measurable definition: The percent change in the total number of college graduates at all Georgia Universities during a specific time period.
+
+-   Ideal measurement: The percent change in the total number of college graduates at all Georgia Universities after HOPE starts.
+
+-   Feasible measurement: The percent change in the total number of college graduates at all Georgia Universities after HOPE starts.
+
+-   Measurement of program effect: The average difference in college graduates between those in GA and those in a non-HOPE state (can serve as a proper counterfactual) after the program started minus the average difference in college graduates before the program started.
+
+#### Attribute 2: Higher Graduation Acceptance (Applications)
+
+-   Measurable definition: The percent change in the total number of graduation applications accepted at all Georgia Universities during a specific time period.
+
+-   Ideal measurement: The percent change in the total number of graduation applications accepted at all Georgia Universities after HOPE starts.
+
+-   Feasible measurement: The percent change in the total number of graduation applications accepted at all Georgia Universities after HOPE starts.
+
+-   Measurement of program effect: The average difference in graduation applications accepted between those in GA and those in a non-HOPE state (can serve as a proper counterfactual) after the program started minus the average difference in graduation applications accepted before the program started.
+
+#### Attribute 3: Higher Semester Hours Completed
+
+-   Measurable definition: The percent change in the total number of semester hours completed at all Georgia Universities during a specific time period.
+
+-   Ideal measurement: The percent change in the total number of semester hours completed at all Georgia Universities after HOPE starts.
+
+-   Feasible measurement: The percent change in the total number of semester hours completed at all Georgia Universities after HOPE starts.
+
+-   Measurement of program effect: The average difference in semester hours completed between those in GA and those in a non-HOPE state (can serve as a proper counterfactual) after the program started minus the average difference in semester hours completed before the program started.
+
+## Causal theory
+
+![Figure 3: HOPE DAG](figures/HOPE%20DAG.png)
+
+I expect the HOPE program will cause the number of college graduates to increase after controlling for possible confounding variables. The number of college graduates is driven by socioeconomic class, other financial aid, students' grades, financial burden, location, and year. A parent's education can be linked to socioeconomic class, while grades and socioeconomic class can cause financial aid. Also, the financial burden students incur can be caused by the HOPE scholarship and other potential financial assistance.
+
+Both location and year cause the HOPE scholarship implementation. Therefore, location and year must be controlled since they open a back door path. I did not include factors that are unobservable because there would be no ideal way to collect the data. Also, the mediator variables (financial burden, grades, other financial aid) do not need to be controlled since it would distort the total effect.
+
+## Formal Hypothesis
+
+I predict that the HOPE scholarship will be successful in its goal of increasing higher educational attainment by causing the number of college graduates to increase in the state of Georgia.

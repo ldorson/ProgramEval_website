@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Theory and Implementation</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Introduction.html">Introduction</a>
+</li>
+<li>
+  <a href="Theory.html">Program Theory and Implementation</a>
+</li>
+<li>
+  <a href="Outcome.html">Outcome and Causation</a>
+</li>
+<li>
+  <a href="Data.html">Data and Methods</a>
+</li>
+<li>
+  <a href="Analysis.html">Synthetic Analysis</a>
+</li>
+<li>
+  <a href="Conclusion.html">Conclusion</a>
+</li>
+<li>
+  <a href="Download.html">Synthetic Data Download</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Theory and Implementation</h1>
+
+</div>
+
+
+<div id="program-theory" class="section level2">
+<h2>1: Program theory</h2>
+<p>The HOPE scholarship program’s underlying goal was to increase
+education in Georgia. To do this, they predetermined that providing a
+state-wide merit-based scholarship was the best way to achieve this.
+HOPE scholarship recipients have 100% of their tuition costs covered at
+eligible in-state institutions. Policymakers hoped that by offering this
+sizable financial aid, students would be incentivized to perform better
+in the academic environment at both the high school and college levels.
+With students performing better in school, there would be a higher
+chance of more students getting accepted into college. Also, students
+who perform better will feel more of a desire to pursue higher education
+than those who do not. To follow that, if more Georgia students have a
+higher chance of being accepted into college and a higher drive to
+pursue further education, this will lead to more college enrollment.
+With an increase in college enrollment overall, there is the potential
+for a higher number of college graduates compared to low college
+enrollment. </p>
+<p>To sum up, the HOPE program’s underlying theory is that by offering
+financial support at higher education institutions within the state,
+students would be motivated to perform better in school. This would
+hopefully increase the number of Georgians receiving a college degree
+and simultaneously increase the overall education level in Georgia,
+which is the desired outcome.</p>
+<p><br />
+</p>
+<div class="figure">
+<img src="figures/Impact%20Theory.png" alt="" />
+<p class="caption">Figure 1: HOPE Impact Theory</p>
+</div>
+<p><br />
+<br />
+</p>
+</div>
+<div id="logic-model" class="section level2">
+<h2>2: Logic model</h2>
+<div class="figure">
+<img src="figures/Logic%20Model.png" alt="" />
+<p class="caption">Figure 2: HOPE Logic Model</p>
+</div>
+<p><br />
+</p>
+<div id="inputs" class="section level4">
+<h4><u>Inputs</u></h4>
+<ul>
+<li><p>Low college attainment: As mentioned earlier Georgia’s percentage
+of students receiving a degree was well below the national average. HOPE
+was created to combat that.</p></li>
+<li><p>Georgia students: This represents all high school and college
+level students. They are the potential recipients of the HOPE
+scholarship.</p></li>
+<li><p>GA institutions: This represents all the institutions in Georgia
+(&amp; some out of state) that accept the HOPE scholarship.</p></li>
+<li><p>State funding: The program is funded entirely by the Georgia
+Lottery for Education which comes from lottery ticket revenue.</p></li>
+<li><p>HOPE staff: This represents the staff that run the scholarship
+program financially, determine eligibility, and monitor student
+eligibility being maintained.</p></li>
+</ul>
+</div>
+<div id="activities" class="section level4">
+<h4><u>Activities</u></h4>
+<ul>
+<li><p>HOPE scholarship offered: This is the initial scholarship that is
+offered to all Georgia students graduating high school and enrolled in
+college.</p></li>
+<li><p>HOPE scholarship awarded: If a student meets the requirements,
+they are awarded tuition coverage.</p></li>
+<li><p>Eligibility processed: HOPE staff have to determine which Georgia
+students meet the GPA requirements.</p></li>
+<li><p>Eligibility maintained: HOPE recipients have to maintain a
+specific GPA requirement that must be monitored by staff.</p></li>
+</ul>
+</div>
+<div id="outputs" class="section level4">
+<h4><u>Outputs</u></h4>
+<ul>
+<li><p>HOPE recipients: The number of college students awarded the HOPE
+scholarship.</p></li>
+<li><p>HOPE amount spent: The total amount of funding that was invested
+into HOPE scholarship recipients.</p></li>
+<li><p>HOPE recipient GPAs: This represents the GPAs that HOPE
+recipients received in college.</p></li>
+</ul>
+</div>
+<div id="outcomes" class="section level4">
+<h4><u>Outcomes</u></h4>
+<ul>
+<li><p>Increase in School Dedication: Students will strive to perform
+better in school.</p></li>
+<li><p>Increase in College Enrollment: The number of Georgia students
+enrolled in college will increase as a result.</p></li>
+<li><p>Increase in College Graduates: The number of Georgia college
+graduates will increase as a result as well.</p></li>
+<li><p>Increase in Overall Georgian Knowledge: An overall increase in
+the knowledge/skills of Georgia residents. This is the main goal of the
+HOPE program that will hopefully be the result of the financial
+incentives offered to Georgia students.</p></li>
+</ul>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

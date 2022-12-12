@@ -1,0 +1,155 @@
+---
+title: "Measurement"
+author: "Lindsey Dorson"
+date: "9/19/2022"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    toc: yes
+  html_document: 
+    toc: yes
+  word_document: 
+    toc: yes
+---
+
+# 1: Measurement and abstraction for full-day kindergarten
+
+## Possible outcomes
+
+Make a list of two (2) possible outcomes of the full-day kindergarten program. 
+
+- Higher Achievement
+- Increased Intellectual Ability
+
+## Outcome 1: Higher Achievement
+
+- Increase in academic awards
+- Better communication skills
+- Better grades
+- Higher test scores
+
+I think receiving awards, having better grades, and higher test scores best capture higher achievement.  Usually students are rewarded with awards at the end of the year which capitalize their performance achievements. This is not limited to just grade achievements but also behavioral achievements (leadership, artistic, hard worker). Also, receiving good grades and performing well on standardized tests illustrate a mixture of drive and dedication which are all qualities associated with achievement. 
+
+### Attribute 1: Increase in Academic Awards
+
+- Measurable definition: The percent change in students that received an academic award in first grade following full day kindergarten. 
+- Ideal measurement: The percent change in students that received an academic award in first grade following full day kindergarten. 
+- Feasible measurement: The percent change in students that received an academic award in first grade following full day kindergarten. 
+- Measurement of program effect: The average difference in academic award recipients between students in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in academic award recipients before the program started.
+
+
+### Attribute 2: Better Grades
+
+- Measurable definition: The percent change in student grades in the first grade following full day kindergarten. 
+- Ideal measurement: The percent change in student grades in the first grade following full day kindergarten. 
+- Feasible measurement: The percent change in student grades in the first grade following full day kindergarten. 
+- Measurement of program effect: The average difference in student grades in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in student’s grades before the program started.
+
+### Attribute 3: Higher test scores
+
+- Measurable definition: The percent change in first grade standardized test scores following full day kindergarten. 
+- Ideal measurement: The percent change in first grade standardized test scores following full day kindergarten. 
+- Feasible measurement: The percent change in first grade standardized test scores following full day kindergarten. 
+- Measurement of program effect: The average difference in student test scores in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in student test scores before the program started.
+
+## Outcome 2: Increased Intellectual Ability
+
+- Good problem solving skills
+- Good communication skills
+- Lower grade retention
+- Higher Advanced placement
+- Better Grades
+- Higher test scores
+
+I think lower grade retention, higher advanced placement, and better grades would all indicate increased intellectual ability. Students who are ahead intellectually would not be held back a grade. Also, being placed in an advanced class rather than a regular class would demonstrate higher intellectual ability since the coursework is more advanced. I would also use better grades as an indicator for increased intellectual ability because higher grades are usually used to judge student acceptance into an advanced placement program. 
+
+### Attribute 1: Lower Grade Retention
+
+- Measurable definition: The percent change in students retained after kindergarten following full day kindergarten. 
+- Ideal measurement: The percent change in students retained after kindergarten following full day kindergarten. 
+- Feasible measurement: The percent change in students retained after kindergarten following full day kindergarten. 
+- Measurement of program effect: The average difference in kindergarten retention in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in student retention before the program started.
+
+### Attribute 2: Higher Advanced Placement
+
+- Measurable definition: The percent change in students placed in an advanced first grade class following full day kindergarten.
+- Ideal measurement: The percent change in students placed in an advanced first grade class following full day kindergarten.
+- Feasible measurement: The percent change in students placed in an advanced first grade class following full day kindergarten.
+- Measurement of program effect: The average difference in advanced placement for first graders in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in advanced placement before the program started.
+
+### Attribute 3:  Better Grades
+
+- Measurable definition: The percent change in kindergarten grades following full day kindergarten. 
+- Ideal measurement: The percent change in kindergarten grades following full day kindergarten. 
+- Feasible measurement: The percent change in kindergarten grades following full day kindergarten. 
+- Measurement of program effect: The average difference in student grades in a county that solely offered the full day kindergarten program and students in a county that did not (regular half day kindergarten) after the program started minus the average difference in student’s grades before the program started.
+
+# 2: Measurement and abstraction for your program
+
+## Possible outcomes
+
+- Increase in College Enrollment
+- Increase in College Graduates
+
+## Outcome 1: Increase in College Enrollment
+
+- Increase in College Enrollment
+- Higher number of college applications
+- Higher number of college admission
+- Higher number of class registrations
+- Higher number of class attendance
+- Higher number of Majors declared
+
+For a student to be considered enrolled they must first be offered college admission. Therefore, I would argue that increased college enrollment has to be associated with an increase in college admission. Higher class registration is another attribute associated with higher enrollment because enrolled students would have to register for the classes they plan to attend.
+
+### Attribute 1:  Increase in College Enrollment
+
+- Measurable definition: The percent change in the total number of students enrolled at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of students enrolled at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of students enrolled at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in college enrollment between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in college enrollment before the program started.
+
+### Attribute 2: Higher College Admission
+
+- Measurable definition: The percent change in the total number of students admitted at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of students admitted at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of students admitted at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in students admitted between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in student admission before the program started.
+
+### Attribute 3: Higher Class Registration 
+
+- Measurable definition:  The percent change in the total number of class registrations at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of class registrations at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of class registrations at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in class registrations between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in class registration before the program started.
+
+## Outcome 2: Increase in College Graduates
+
+- Increase in College Graduates
+- Higher graduation applications
+- Higher graduation eligibility
+- Higher graduation acceptance (application)
+- Higher number of major requirements achieved
+- Higher amount of semester hours completed
+
+To graduate from a traditional college in the US students have certain requirements. These requirements are usually in the form of an amount of semester hours completed. Therefore, for an increase in college graduates there has to also be an increase in overall completed semester hours. Also, students have to apply for graduation and be accepted to actually graduate. Therefore, there also needs to be an increase in graduation application acceptance for there to be an increase in college graduates.
+
+### Attribute 1: Increase in College Graduates
+
+- Measurable definition: The percent change in the total number of college graduates at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of college graduates at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of college graduates at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in college graduates between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in college graduates before the program started.
+
+### Attribute 2: Higher Graduation Acceptance (Applications)
+
+- Measurable definition: The percent change in the total number of graduation applications accepted at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of graduation applications accepted at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of graduation applications accepted at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in graduation applications accepted between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in graduation applications accepted before the program started.
+
+### Attribute 3: Higher Semester Hours Completed
+- Measurable definition: The percent change in the total number of semester hours completed at all Georgia Universities during a specific time period.
+- Ideal measurement: The percent change in the total number of semester hours completed at all Georgia Universities after HOPE starts.
+- Feasible measurement: The percent change in the total number of semester hours completed at all Georgia Universities after HOPE starts.
+- Measurement of program effect: The average difference in semester hours completed between those in GA and those in a non-HOPE state (that can serve as a proper counterfactual) after the program started minus the average difference in semester hours completed before the program started.

@@ -1,0 +1,24 @@
+---
+project:
+  type: website
+  output-dir: docs
+name: "HOPE Scholarship Program Evaluation"
+navbar:
+  left:
+    - text: "Introduction"
+      href: Introduction.html
+    - text: "Program Theory and Implementation"
+      href: Theory.html
+    - text: "Outcome and Causation"
+      href: Outcome.html
+    - text: "Data and Methods"
+      href: Data.html
+    - text: "Synthetic Analysis"
+      href: Analysis.html
+    - text: "Conclusion"
+      href: Conclusion.html
+    - text: "Synthetic Data Download"
+      href: Download.html
+---
+
+
