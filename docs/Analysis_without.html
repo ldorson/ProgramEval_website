@@ -310,57 +310,12 @@ the student has acquired an undergraduate degree.</p></li>
 graduation rate. Also, Georgia education attainment is lower in
 comparison to most other states during this time period which was worked
 into the data as well.</p>
-<pre class="r"><code>#packages
-library(tidyverse)
-library(broom)
-library(patchwork)
-library(scales)
-library(modelsummary)
-library(ggplot2)</code></pre>
-<pre class="r"><code>set.seed(4660)
-
-# simulate 100000 students
-n_students &lt;- 100000
-
-
-
-did_data &lt;- tibble(
-  id = 1:n_students,
-  year = runif(n_students, min = 1988, max = 1997)%&gt;%
-    round(0),
-  state = sample(c(&quot;0&quot;, &quot;1&quot;), n_students, replace = TRUE)
-) %&gt;%
-  mutate(hope = ifelse(state == &quot;1&quot; &amp; year &gt; 1992, 1, 0)) %&gt;%
-  mutate(grad_base = rbeta(n_students, shape1 = 6, shape2 = 3) * 100,
-         state_effect = ifelse(state == &quot;1&quot;, rnorm(n_students, mean = -5, sd = 2), 0),
-         year_smaller = year - 1987,
-         year_effect = rnorm(n_students, mean = 2, sd = 0.2) * year_smaller,
-         hope_effect = ifelse(state == &quot;1&quot; &amp; year &gt; 1992,
-                             rnorm(n_students, mean = 8, sd = 3),0),
-         grad = grad_base + state_effect + year_effect + hope_effect,
-         grad = rescale(grad, to = c(0, 100))) %&gt;%
-  mutate(post = ifelse(year &gt; 1992,1,0))
-
-head(did_data)</code></pre>
-<pre><code>## # A tibble: 6 × 11
-##      id  year state  hope grad_base state_effect year_smaller year_effect hope_effect  grad  post
-##   &lt;int&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     1  1995 1         1      67.1        -3.51            8       12.7         9.96  64.1     1
-## 2     2  1990 0         0      79.0         0               3        5.40        0     62.5     0
-## 3     3  1994 0         0      51.3         0               7       13.8         0     46.0     1
-## 4     4  1990 0         0      74.8         0               3        6.24        0     59.7     0
-## 5     5  1995 1         1      75.1        -6.12            8       19.3        10.5   74.8     1
-## 6     6  1994 1         1      73.1        -1.97            7       14.9         9.43  72.0     1</code></pre>
 <div id="difference-in-means" class="section level3">
 <h3>Difference in Means</h3>
 <p>Below shows the difference in means between the the treatment and
 control group, where Georgia is equal to one. From the graph, we can
 infer that, on average, the control state has a higher graduation
 rate.</p>
-<pre class="r"><code>ggplot(did_data, aes(x = state, y = grad, color = state)) +
-  stat_summary(geom = &quot;pointrange&quot;, fun.data = &quot;mean_se&quot;) +
-  guides(color = &quot;none&quot;) + 
-  labs(title = &quot;Difference in Graduation Rates&quot;)</code></pre>
 <p><img src="Analysis_without_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="test-parallel-trends" class="section level3">
@@ -370,20 +325,6 @@ infer that the control state serves as a proper counterfactual absent
 the HOPE scholarship intervention. After HOPE implementation, a
 noticeable increase in graduation rates is depicted in Georgia as
 well.</p>
-<pre class="r"><code>plot_data &lt;- did_data %&gt;% 
-  group_by(year, state) %&gt;%
-  summarize(average_grad = mean(grad),
-            se = sd(grad) / sqrt(n()),
-            upper = average_grad + (1.96 * se),
-            lower = average_grad + (-1.96 * se))
-
-ggplot(plot_data, aes(x = year, y= average_grad, color = state)) +
-  geom_vline(xintercept = 1993) +
-  geom_ribbon(aes(ymin = lower, ymax = upper, fill = state), alpha = 0.3, color = FALSE) +
-  geom_line() +
-  theme(legend.position = &quot;bottom&quot;) +
-  labs(title = &quot;Average Graduation Rates Over Time&quot;) +
-  scale_x_continuous(breaks = plot_data$year)</code></pre>
 <p><img src="Analysis_without_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="regression-analysis" class="section level2">
@@ -396,12 +337,6 @@ in graduation rates on average and being after 1993 is associated with a
 8 percentage point increase in graduation rates on average. This model
 controls for the graduation rate’s natural growth and state
 differences.</p>
-<pre class="r"><code>model_did &lt;- lm(grad ~ post + state + post * state , data = did_data)
-
-modelsummary(list(&quot;DiD&quot; = model_did),
-             stars = TRUE,
-             title = &quot; Synthetic Regression Results&quot;,
-             coef_rename = c(&quot;post&quot; = &quot;POST&quot;,&quot;state1&quot; = &quot;HOPE&quot;, &quot;post * state1&quot; = &quot; Post*HOPE&quot;))</code></pre>
 <table style="NAborder-bottom: 0; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
 <caption>
 Synthetic Regression Results
