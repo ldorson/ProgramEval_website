@@ -3,7 +3,7 @@
     "path": "~/Workspace/r4ds/final-project/_site.yml",
     "project_path": "_site.yml",
     "type": "yaml",
-    "hash": "0",
+    "hash": "520721621",
     "contents": "",
     "dirty": false,
     "created": 1670700788273.0,
@@ -13,16 +13,16 @@
         "tempName": "Untitled2",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "21,12",
+        "cursorPosition": "19,23",
         "scrollLine": "0",
         "last_setup_crc32": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1670806772,
+    "lastKnownWriteTime": 1670807626,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1670806772226,
+    "last_content_update": 1670807626313,
     "read_only": false,
     "read_only_alternatives": []
 }
