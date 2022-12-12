@@ -257,7 +257,7 @@ $(document).ready(function () {
   <a href="Data.html">Data and Methods</a>
 </li>
 <li>
-  <a href="Analysis_without_code.html">Synthetic Analysis</a>
+  <a href="Analysis_without.html">Synthetic Analysis</a>
 </li>
 <li>
   <a href="Analysis.html">Synthetic Data with code</a>
@@ -361,7 +361,7 @@ rate.</p>
   stat_summary(geom = &quot;pointrange&quot;, fun.data = &quot;mean_se&quot;) +
   guides(color = &quot;none&quot;) + 
   labs(title = &quot;Difference in Graduation Rates&quot;)</code></pre>
-<p><img src="Analysis_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="test-parallel-trends" class="section level3">
 <h3>Test Parallel Trends</h3>
@@ -384,7 +384,7 @@ ggplot(plot_data, aes(x = year, y= average_grad, color = state)) +
   theme(legend.position = &quot;bottom&quot;) +
   labs(title = &quot;Average Graduation Rates Over Time&quot;) +
   scale_x_continuous(breaks = plot_data$year)</code></pre>
-<p><img src="Analysis_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="regression-analysis" class="section level2">
 <h2>Regression Analysis</h2>
