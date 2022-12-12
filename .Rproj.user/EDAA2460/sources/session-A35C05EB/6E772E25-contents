@@ -7,7 +7,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Introduction"
-      href: Introduction.html
+      href: index.html
     - text: "Program Theory and Implementation"
       href: Theory.html
     - text: "Outcome and Causation"
