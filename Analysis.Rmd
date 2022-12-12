@@ -97,4 +97,10 @@ modelsummary(list("DiD" = model_did),
              title = " Synthetic Regression Results")
 
 ```
+```{r, echo=F}
+write.csv(did_data, "data/synth_data.csv")
+```
+
+
+
 

@@ -17,7 +17,7 @@ navbar:
     - text: "Conclusion"
       href: Conclusion.html
     - text: "Synthetic Data Download"
-      href: Download.html
+      href: data/synth_data.csv
 ---
 
 

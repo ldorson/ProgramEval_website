@@ -1,0 +1,106 @@
+---
+title: "Synthetic Analysis"
+
+---
+
+Synthetic Differences in Differences
+
+
+Generate a synthetic (fake) dataset in R with all the variables you'll need for the real life analysis. Analyze the data using your identification strategy. For instance:
+
+- If you're relying on observational data, close all the backdoors with matching or inverse probability weighting, don't adjust for colliders, and make a strong argument for isolation of the causal effect in the absence of treatment/control groups
+- If you're doing an RCT, test the differences in means in the treatment and control groups (and follow all other best practices listed in the World Bank book, checking for balance across groups, etc.)
+- If you're doing diff-in-diff, run a regression model with an interaction term to show the diff-in-diff
+- If you're doing regression discontinuity, check for a jump in the outcome variable at the cutoff in the running variable
+- If you're using instrumental variables, check the validity of your instrument and run a 2SLS model
+
+Include robustness checks to ensure the validity of your effect (i.e. if you're doing regression discontinuity, test different bandwidths and kernel types; etc.)
+
+(**As many words as you need to fully describe your analysis and results**)
+
+```{r}
+#packages
+library(tidyverse)
+library(broom)
+library(patchwork)
+library(scales)
+```
+
+
+
+
+
+```{r}
+set.seed(4660)
+
+# simulate 100000 students
+n_students <- 100000
+
+
+# state B represents Georgia (treatment state) while state B represents control state
+did_data <- tibble(
+  id = 1:n_students,
+  year = round(runif(n_students, min = 1988, max = 1997), 0),
+  state = sample(c("state A", "state B"), n_students, replace = TRUE)
+) %>%
+  mutate(hope = ifelse(state == "state B" & year > 1992, TRUE, FALSE)) %>%
+  mutate(grad_base = rbeta(n_students, shape1 = 6, shape2 = 3) * 100,
+         state_effect = ifelse(state == "state B", rnorm(n_students, mean = 4, sd = 2), 0),
+         year_smaller = year - 1987,
+         year_effect = rnorm(n_students, mean = -3, sd = 0.2) * year_smaller,
+         hope_effect = ifelse(state == "state B" & year > 1992,
+                             rnorm(n_students, mean = -8, sd = 2),
+                             0),
+         grad = grad_base + state_effect + year_effect + hope_effect,
+         grad = rescale(grad, to = c(0, 100))) %>%
+  mutate(after = year > 1992)
+
+head(did_data)
+
+
+
+
+
+```
+
+
+```{r}
+ggplot(did_data, aes(x = state, y = grad, color = state)) +
+  stat_summary(geom = "pointrange", fun.data = "mean_se") +
+  guides(color = "none")
+
+
+
+```
+```{r}
+plot_data <- did_data %>%
+  group_by(year, state) %>%
+  summarize(mean = mean(grad),
+            se = sd(grad) / sqrt(n()),
+            upper = mean + (1.96 * se),
+            lower = mean + (-1.96 * se))
+
+ggplot(plot_data, aes(x = year, y = mean, color = state)) +
+  geom_vline(xintercept = 1993) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = state), alpha = 0.3, color = FALSE) +
+  geom_line() +
+  theme(legend.position = "bottom")
+
+
+```
+```{r}
+model_did <- lm(grad ~ after + state + hope , data = did_data)
+tidy(model_did)
+
+modelsummary(list("DiD" = model_did),
+             stars = TRUE,
+             title = " Synthetic Regression Results")
+
+```
+```{r, echo=F}
+write.csv(did_data, "data/synth_data.csv")
+```
+
+
+
+
